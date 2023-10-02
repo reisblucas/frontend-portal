@@ -1,5 +1,5 @@
 {
-  "extends": ["next/core-web-vitals", "plugin:prettier/recommended"],
+  "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended", "prettier"],
   "env": {
     "browser": true,
     "es2023": true
@@ -8,5 +8,8 @@
     "react": {
       "version": "detect"
     }
+  },
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "warn"
   }
 }
