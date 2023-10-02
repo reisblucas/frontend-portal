@@ -1,0 +1,12 @@
+{
+  "extends": ["next/core-web-vitals", "plugin:prettier/recommended"],
+  "env": {
+    "browser": true,
+    "es2023": true
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
+}
