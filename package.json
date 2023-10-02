@@ -1,7 +1,9 @@
 {
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "open-browser": "open http://localhost:3000",
+    "dev:obsolete": "next dev",
+    "dev": "next dev & pnpm run open-browser",
     "build": "next build",
     "start": "next start",
     "e2e": "start-server-and-test dev http://localhost:3000 \"cypress open --e2e\"",
