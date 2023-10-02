@@ -1,12 +1,12 @@
 import type { AppProps } from 'next/app'
 import '../styles/globals.css'
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraCustomProvider } from '@/infra/chakra/provider'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ChakraProvider>
+    <ChakraCustomProvider>
       <Component {...pageProps} />
-    </ChakraProvider>
+    </ChakraCustomProvider>
   )
 }
 
