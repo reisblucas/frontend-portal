@@ -18,8 +18,10 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@tanstack/react-query": "^4.35.7",
+    "axios": "^1.5.1",
     "framer-motion": "^10.16.4",
     "next": "latest",
+    "next-auth": "^4.23.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hook-form-chakra": "^1.0.1"
