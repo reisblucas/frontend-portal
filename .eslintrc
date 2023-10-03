@@ -1,5 +1,10 @@
 {
-  "extends": ["next/core-web-vitals", "plugin:@typescript-eslint/recommended", "prettier"],
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@tanstack/eslint-plugin-query/recommended",
+    "prettier"
+  ],
   "env": {
     "browser": true,
     "es2023": true
