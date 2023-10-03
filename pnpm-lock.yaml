@@ -35,6 +35,9 @@ dependencies:
   react-dom:
     specifier: 18.2.0
     version: 18.2.0(react@18.2.0)
+  react-hook-form-chakra:
+    specifier: ^1.0.1
+    version: 1.0.1(@chakra-ui/react@2.8.1)(react-hook-form@7.47.0)(react@18.2.0)
 
 devDependencies:
   '@tanstack/eslint-plugin-query':
@@ -4543,6 +4546,27 @@ packages:
       react-clientside-effect: 1.2.6(react@18.2.0)
       use-callback-ref: 1.3.0(@types/react@18.0.15)(react@18.2.0)
       use-sidecar: 1.1.2(@types/react@18.0.15)(react@18.2.0)
+    dev: false
+
+  /react-hook-form-chakra@1.0.1(@chakra-ui/react@2.8.1)(react-hook-form@7.47.0)(react@18.2.0):
+    resolution: {integrity: sha512-2BNzdMLwhlaU2fyJNmoGk33Y1yt69qfpFLkSa35Ge3sZolVvSVLX5UTExcPZriZJuDp1oImo+gGLA64/fEOAvg==}
+    peerDependencies:
+      '@chakra-ui/react': ^2
+      react: '>=17'
+      react-hook-form: ^7
+    dependencies:
+      '@chakra-ui/react': 2.8.1(@emotion/react@11.11.1)(@emotion/styled@11.11.0)(@types/react@18.0.15)(framer-motion@10.16.4)(react-dom@18.2.0)(react@18.2.0)
+      react: 18.2.0
+      react-hook-form: 7.47.0(react@18.2.0)
+    dev: false
+
+  /react-hook-form@7.47.0(react@18.2.0):
+    resolution: {integrity: sha512-F/TroLjTICipmHeFlMrLtNLceO2xr1jU3CyiNla5zdwsGUGu2UOxxR4UyJgLlhMwLW/Wzp4cpJ7CPfgJIeKdSg==}
+    engines: {node: '>=12.22.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /react-is@16.13.1:
