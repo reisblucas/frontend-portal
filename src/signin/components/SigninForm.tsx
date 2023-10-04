@@ -34,12 +34,19 @@ export default function SigninForm() {
   return (
     <FormProvider {...form}>
       <VStack as="form" onSubmit={form.handleSubmit(onSubmit)} alignItems="start" gap={4} maxWidth="275px">
-        <InputControl name="username" label="Username" width="full" {...inputProjectDefault} />
+        <InputControl
+          name="username"
+          label="Username"
+          width="full"
+          inputProps={{ type: 'text', placeholder: 'Turing' }}
+          {...inputProjectDefault}
+          placeholder="yourUsername"
+        />
 
         <InputControl
           name="password"
           label="Password"
-          inputProps={{ type: 'password' }}
+          inputProps={{ type: 'password', placeholder: '*****' }}
           style={{ ...inputProjectDefault }}
         />
 
