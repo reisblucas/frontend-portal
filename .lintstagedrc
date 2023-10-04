@@ -1,6 +1,6 @@
 {
   "**/*.{js,jsx,ts,tsx}": [
-    "pnpm lint --fix",
+    "pnpm next lint . --max-warnings=0 --fix",
     "prettier --write --ignore-unknown"
   ],
   "**/*.json": "prettier --write --ignore-unknown"
