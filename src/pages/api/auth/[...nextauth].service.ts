@@ -1,7 +1,7 @@
 import { SessionStrategy, DefaultSession } from 'next-auth'
 import NextAuth, { AuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import { signinService } from '@/signin/service'
+import { signinService } from '@/signin/services'
 import { DefaultJWT } from 'next-auth/jwt'
 
 declare module 'next-auth' {
