@@ -1,10 +1,9 @@
-import { VStack } from '@chakra-ui/react'
+import { VStack, useToast } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { FormProvider, useForm } from 'react-hook-form'
 import { InputControl, SubmitButton } from 'react-hook-form-chakra'
 import * as Yup from 'yup'
-
-import { useLogin } from '../hooks'
+import { signIn } from 'next-auth/react'
 
 const defaultValues = {
   username: '',
@@ -26,9 +25,16 @@ const inputProjectDefault = {
 
 export default function SigninForm() {
   const form = useForm({ resolver: yupResolver(validationSchema), defaultValues, mode: 'onBlur' })
-  const login = useLogin()
+  const toast = useToast()
   const onSubmit = async (data: typeof defaultValues) => {
-    login.mutate(data)
+    const response = await signIn('credentials', { ...data, callbackUrl: '/signin', redirect: false })
+
+    if (!response.ok) {
+      toast({
+        title: 'Username or password incorrect',
+        colorScheme: 'red',
+      })
+    }
   }
 
   return (
