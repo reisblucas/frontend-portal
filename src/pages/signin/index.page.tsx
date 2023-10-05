@@ -21,3 +21,5 @@ export default function Login() {
     </Flex>
   )
 }
+
+Login.isPublic = true
