@@ -2,20 +2,20 @@ import { SessionStrategy, DefaultSession } from 'next-auth'
 import NextAuth, { AuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { signinService } from '@/signin/service'
-import { DefaultJWT, JWT } from 'next-auth/jwt'
+import { DefaultJWT } from 'next-auth/jwt'
 
 declare module 'next-auth' {
   interface Session {
-    token?: string & DefaultSession['user']
+    clientToken?: string & DefaultSession['user']
+  }
+
+  interface User {
+    clientToken: string
   }
 }
 declare module 'next-auth/jwt' {
-  interface JWT {
-    token: {
-      user: {
-        clientToken: string
-      }
-    } & DefaultJWT
+  interface JWT extends DefaultJWT {
+    clientToken: string
   }
 }
 
@@ -53,17 +53,20 @@ export const authOptions: AuthOptions = {
   },
   debug: process.env.NODE_ENV === 'development',
   callbacks: {
+    async jwt({ token, user }) {
+      if (user !== undefined && user.clientToken !== undefined) {
+        token = { ...token, clientToken: user.clientToken }
+      }
+
+      return token
+    },
     async session({ session, token }) {
-      if (token && token.token.user.clientToken) {
-        session.token = token.token.user.clientToken
+      console.log('session on session', session, token)
+      if (token && token['clientToken']) {
+        session.clientToken = token.clientToken
       }
 
       return session
-    },
-    async jwt(params) {
-      const sessionclone = { ...params.session }
-      params.session = { ...sessionclone, token: params.token }
-      return params as unknown as JWT
     },
   },
 }
