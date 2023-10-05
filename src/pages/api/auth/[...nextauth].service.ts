@@ -39,7 +39,6 @@ export const authOptions: AuthOptions = {
           const response = await signinService.login({ username: credentials.username, password: credentials.password })
 
           if (response.data?.token) {
-            console.log('authorize token', response.data.token)
             return { id: '1', clientToken: response.data.token }
           }
         } catch (error) {
@@ -61,7 +60,7 @@ export const authOptions: AuthOptions = {
       return token
     },
     async session({ session, token }) {
-      console.log('session on session', session, token)
+      console.log('Session callback:', { session, token })
       if (token && token['clientToken']) {
         session.clientToken = token.clientToken
       }
