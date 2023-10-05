@@ -18,11 +18,11 @@ function MyApp({ Component, pageProps }: MyAppProps) {
       <QueryClientProvider>
         <SessionProvider session={pageProps.session}>
           {Component.isPublic ? (
+            <Component {...pageProps} />
+          ) : (
             <Auth>
               <Component {...pageProps} />
             </Auth>
-          ) : (
-            <Component {...pageProps} />
           )}
         </SessionProvider>
       </QueryClientProvider>
