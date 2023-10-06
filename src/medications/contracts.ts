@@ -12,5 +12,5 @@ export interface Medication {
 export interface MedicationsList {
   data: Medication[]
   total: number
-  lastPage: number
+  last_page: number
 }
