@@ -1,9 +1,18 @@
 import { client } from '@/infra/axios'
+import { MedicationsList } from './contracts'
 
 class MedicationsService {
-  async get() {
-    const response = await client.get('/medications')
+  async get({ page, limit, search }: MedicationsService.ListParams) {
+    const response = await client.get<MedicationsList>('/medications', { params: { page, limit, search } })
     return response.data
+  }
+}
+
+export namespace MedicationsService {
+  export type ListParams = {
+    page: number
+    limit: number
+    search: string
   }
 }
 
