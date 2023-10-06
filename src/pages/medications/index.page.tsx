@@ -33,12 +33,7 @@ export default function Medications() {
       </Heading>
 
       <Skeleton isLoaded={medications.isSuccess}>
-        <Grid
-          gridTemplateColumns={{ base: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' }}
-          gridAutoFlow="dense"
-          gap={4}
-          // justifyContent="space-around"
-        >
+        <Grid gridTemplateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(3, 1fr)' }} gridAutoFlow="dense" gap={4}>
           {medications.isSuccess &&
             medications.data.data.map((medication) => {
               return (
@@ -47,15 +42,35 @@ export default function Medications() {
                   flexDirection="column"
                   padding={2}
                 >
-                  <Text fontSize={{ base: 'xs', md: 'md' }}>{`${medication.drug_name} ${medication.strength}`}</Text>
+                  <Text fontSize={{ base: 'xs', md: 'md' }} textAlign="center" fontWeight="bold">{`${
+                    medication.drug_name
+                  } ${formatStrength(medication.strength).strength}`}</Text>
 
-                  <Flex gap={2} flexDirection="column">
-                    <Text fontSize={{ base: '2xs', md: 'xs' }}>{medication.active_ingredient}</Text>
-                    <Text fontSize={{ base: '2xs', md: 'xs' }}>{medication.application_number}</Text>
-                    <Text fontSize={{ base: '2xs', md: 'xs' }}>{medication.product_number}</Text>
-                    <Text fontSize={{ base: '2xs', md: 'xs' }}>{medication.form}</Text>
-                    {getStrength(medication)}
-                  </Flex>
+                  <Grid gridTemplateColumns="100px 1fr">
+                    <Flex
+                      flexDirection="column"
+                      gap={2}
+                      sx={{
+                        p: {
+                          fontWeight: '600',
+                        },
+                      }}
+                    >
+                      <Text variant="grid">Active ing.:</Text>
+                      <Text variant="grid">App num.:</Text>
+                      <Text variant="grid">Product num.:</Text>
+                      <Text variant="grid">Form:</Text>
+                      <Text variant="grid">Strength:</Text>
+                    </Flex>
+
+                    <Flex gap={2} flexDirection="column">
+                      <Text variant="grid">{medication.active_ingredient}</Text>
+                      <Text variant="grid">{medication.application_number}</Text>
+                      <Text variant="grid">{medication.product_number}</Text>
+                      <Text variant="grid">{medication.form}</Text>
+                      {getStrength(medication)}
+                    </Flex>
+                  </Grid>
                 </Flex>
               )
             })}
