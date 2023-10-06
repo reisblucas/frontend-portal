@@ -1,10 +1,14 @@
 import { Medication, useMedications } from '@/medications'
-import { Flex, Grid, Heading, Link, Skeleton, Text, VStack } from '@chakra-ui/react'
-import React, { useCallback, useState } from 'react'
+import { Flex, Grid, Heading, Skeleton, Text, VStack } from '@chakra-ui/react'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import React, { useCallback, useMemo, useState } from 'react'
 
 export default function Medications() {
-  const medications = useMedications({ page: 1, limit: 50 })
-  const [crrPage] = useState(1) // after that get actual page using route params to inject on state
+  const { query } = useRouter()
+  const queryPage = useMemo(() => (query?.page ? Number(query.page) : 1), [query])
+  const [crrPage, setCrrPage] = useState(queryPage)
+  const medications = useMedications({ page: crrPage, limit: 50 })
 
   const getPagination = useCallback(
     (last_page: number, pagesVisible = 1) => {
@@ -29,10 +33,6 @@ export default function Medications() {
           obj.show = true
         }
 
-        if (i === last_page - pagesVisible || i > last_page - pagesVisible) {
-          obj.show = true
-        }
-
         pages.push(obj)
       }
 
@@ -51,10 +51,7 @@ export default function Medications() {
   const getStrength = useCallback(
     (medication: Medication) => {
       return medication.strength.includes('**') ? (
-        <>
-          <Text fontSize={{ base: '2xs', md: 'xs' }}>{formatStrength(medication.strength).strength} **</Text>
-          {/* <Text fontSize={{ base: '2xs', md: 'xs' }}>{formatStrength(medication.strength).observation}</Text> */}
-        </>
+        <Text fontSize={{ base: '2xs', md: 'xs' }}>{formatStrength(medication.strength).strength} **</Text>
       ) : (
         <Text fontSize={{ base: '2xs', md: 'xs' }}>{medication.strength}</Text>
       )
@@ -119,14 +116,20 @@ export default function Medications() {
 
         <Flex gap={2} justifyContent="center">
           {medications.isSuccess &&
-            getPagination(medications.data.last_page, 2).map((page) => {
-              if (!page.show) {
-                return <Text key={page.page * 3.14}>...</Text>
+            getPagination(medications.data.last_page, 2).map(({ page, show }) => {
+              if (!show) {
+                return <Text key={page * 3.14}>...</Text>
               }
 
               return (
-                <Link href={`/medications/${page.page}`} key={page.page * 3.14}>
-                  {page.page}
+                <Link
+                  href={{ pathname: '/medications', query: { page } }}
+                  key={page * 3.14}
+                  onClick={() => setCrrPage(page)}
+                >
+                  <Text color={queryPage === page ? 'green.500' : 'inherit'} _hover={{ color: 'blue.500' }}>
+                    {page}
+                  </Text>
                 </Link>
               )
             })}
