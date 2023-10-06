@@ -33,7 +33,11 @@ export default function Medications() {
       </Heading>
 
       <Skeleton isLoaded={medications.isSuccess}>
-        <Grid gridTemplateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(3, 1fr)' }} gridAutoFlow="dense" gap={4}>
+        <Grid
+          gridTemplateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }}
+          gridAutoFlow="dense"
+          gap={8}
+        >
           {medications.isSuccess &&
             medications.data.data.map((medication) => {
               return (
