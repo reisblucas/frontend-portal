@@ -3,7 +3,7 @@ import { Flex, Grid, Heading, Link, Skeleton, Text, VStack } from '@chakra-ui/re
 import React, { useCallback, useState } from 'react'
 
 export default function Medications() {
-  const medications = useMedications({ page: 5, limit: 50 })
+  const medications = useMedications({ page: 1, limit: 50 })
   const [crrPage] = useState(1) // after that get actual page using route params to inject on state
 
   const getPagination = useCallback(
@@ -29,6 +29,10 @@ export default function Medications() {
           obj.show = true
         }
 
+        if (i === last_page - pagesVisible || i > last_page - pagesVisible) {
+          obj.show = true
+        }
+
         pages.push(obj)
       }
 
@@ -48,7 +52,7 @@ export default function Medications() {
     (medication: Medication) => {
       return medication.strength.includes('**') ? (
         <>
-          <Text fontSize={{ base: '2xs', md: 'xs' }}>{formatStrength(medication.strength).strength}</Text>
+          <Text fontSize={{ base: '2xs', md: 'xs' }}>{formatStrength(medication.strength).strength} **</Text>
           {/* <Text fontSize={{ base: '2xs', md: 'xs' }}>{formatStrength(medication.strength).observation}</Text> */}
         </>
       ) : (
@@ -113,18 +117,20 @@ export default function Medications() {
             })}
         </Grid>
 
-        {medications.isSuccess &&
-          getPagination(medications.data.last_page, 2).map((page) => {
-            if (!page.show) {
-              return
-            }
+        <Flex gap={2} justifyContent="center">
+          {medications.isSuccess &&
+            getPagination(medications.data.last_page, 2).map((page) => {
+              if (!page.show) {
+                return <Text key={page.page * 3.14}>...</Text>
+              }
 
-            return (
-              <Flex gap={2} key={page.page * 3.14}>
-                <Link href={`/medications/${page.page}`}>{page.page}</Link>
-              </Flex>
-            )
-          })}
+              return (
+                <Link href={`/medications/${page.page}`} key={page.page * 3.14}>
+                  {page.page}
+                </Link>
+              )
+            })}
+        </Flex>
       </Skeleton>
     </VStack>
   )
