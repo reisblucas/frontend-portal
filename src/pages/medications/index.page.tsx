@@ -1,14 +1,54 @@
 import { Medication, useMedications } from '@/medications'
+import { useDebounce } from '@/infra/helpers'
 import { Flex, FormLabel, Grid, Heading, Input, Select, Skeleton, Text, VStack } from '@chakra-ui/react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 export default function Medications() {
-  const { query } = useRouter()
-  const queryPage = useMemo(() => (query?.page ? Number(query.page) : 1), [query])
+  const router = useRouter()
+  const queryPage = useMemo(() => (router.query?.page ? Number(router.query.page) : 1), [router.query])
   const [crrPage, setCrrPage] = useState(queryPage)
-  const medications = useMedications({ page: crrPage, limit: 50 })
+
+  const querySearch = useMemo(() => (router.query?.search as string) ?? null, [router.query])
+  const [search, setSearch] = useState(querySearch)
+  const debouncedInputValue = useDebounce(search, 500)
+
+  const queryLimit = useMemo(() => {
+    const allowedLimits = ['50', '80', '100']
+    if (router.query?.limit && allowedLimits.includes(router.query.limit as string)) {
+      return Number(router.query.limit)
+    }
+
+    return 50
+  }, [router.query])
+  const [limit, setLimit] = useState(queryLimit)
+
+  const updateRouterQuery = useCallback(
+    (queyrParam: string, queryValue: string) => {
+      router.push({
+        ...router,
+        query: {
+          [queyrParam]: queryValue,
+        },
+      })
+    },
+    [router],
+  )
+
+  useEffect(() => {
+    if (search !== null) {
+      updateRouterQuery('search', search.trim())
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedInputValue, search])
+  console.log('search / debounce', search, debouncedInputValue)
+
+  const medications = useMedications({
+    page: crrPage,
+    limit,
+    search: querySearch ? querySearch : debouncedInputValue ? debouncedInputValue : null,
+  })
 
   const getPagination = useCallback(
     (last_page: number, pagesVisible = 1) => {
@@ -77,33 +117,71 @@ export default function Medications() {
     [formatStrength],
   )
 
+  const handleSearchAction = useCallback((e: React.FormEvent<HTMLInputElement>) => {
+    const {
+      currentTarget: { value },
+    } = e
+    if (value.length > 3) {
+      const trimmedValue = value.trim()
+      setSearch(trimmedValue)
+    }
+  }, [])
+
+  const handleLimitAction = useCallback(
+    (e: React.FormEvent<HTMLSelectElement>) => {
+      const {
+        currentTarget: { value },
+      } = e
+
+      setLimit(Number(value))
+      updateRouterQuery('limit', value)
+    },
+    [updateRouterQuery],
+  )
+
   return (
     <VStack gap={4}>
       <Heading as="h1" textAlign="center">
         Medications
       </Heading>
 
-      <Skeleton isLoaded={medications.isSuccess}>
-        {/* filters component */}
-        <Flex
-          flexDirection={{ base: 'column', md: 'row' }}
-          justifyContent={{ base: 'space-between', md: 'space-around' }}
-          alignItems="center"
-          gap={2}
+      {/* filters component */}
+      <Flex
+        flexDirection={{ base: 'column', md: 'row' }}
+        justifyContent={{ base: 'space-between', md: 'space-around' }}
+        alignItems="center"
+        gap={2}
+      >
+        <FormLabel htmlFor="search" display="flex" justifyContent="space-between" alignItems="center">
+          <Text minWidth="80px">Find med:</Text>
+          <Input id="search" type="text" placeholder="Vasoxyl..." onChange={handleSearchAction} />
+        </FormLabel>
+
+        <Select
+          placeholder="Items per page"
+          maxWidth="30%"
+          alignSelf="center"
+          defaultValue="50"
+          onChange={handleLimitAction}
         >
-          <FormLabel htmlFor="search" display="flex" justifyContent="space-between" alignItems="center">
-            <Text minWidth="80px">Find med:</Text>
-            <Input id="search" type="text" placeholder="Vasoxyl..." />
-          </FormLabel>
+          <option value="50">
+            <Link href={{ pathname: `/medications`, query: { limit: '50' } }}>50</Link>
+          </option>
+          <option value="80">
+            <Link href={{ pathname: `/medications`, query: { limit: '80' } }}>80</Link>
+          </option>
+          <option value="100">
+            <Link href={{ pathname: `/medications`, query: { limit: '100' } }}>100</Link>
+          </option>
+        </Select>
+      </Flex>
 
-          <Select placeholder="Items per page" maxWidth="30%" alignSelf="center" defaultValue="50">
-            <option value="50">50</option>
-            <option value="80">80</option>
-            <option value="100">100</option>
-          </Select>
-        </Flex>
-
+      <Skeleton isLoaded={medications.isSuccess}>
         {/* List component */}
+        {medications.isSuccess && medications.data.data.length === 0 && search !== null && (
+          <Text>No medication found with name {search}</Text>
+        )}
+
         <Grid
           gridTemplateColumns={{ base: 'repeat(1, 1fr)', md: '50% 50%', lg: 'repeat(3, 1fr)' }}
           gridAutoFlow="dense"
