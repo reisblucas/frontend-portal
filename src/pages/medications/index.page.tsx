@@ -1,5 +1,5 @@
 import { Medication, useMedications } from '@/medications'
-import { Flex, Grid, Heading, Skeleton, Text, VStack } from '@chakra-ui/react'
+import { Flex, FormLabel, Grid, Heading, Input, Select, Skeleton, Text, VStack } from '@chakra-ui/react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useCallback, useMemo, useState } from 'react'
@@ -63,6 +63,7 @@ export default function Medications() {
 
     return { strength: strengthText, observation }
   }, [])
+
   const getStrength = useCallback(
     (medication: Medication) => {
       return medication.strength.includes('**') ? (
@@ -83,6 +84,26 @@ export default function Medications() {
       </Heading>
 
       <Skeleton isLoaded={medications.isSuccess}>
+        {/* filters component */}
+        <Flex
+          flexDirection={{ base: 'column', md: 'row' }}
+          justifyContent={{ base: 'space-between', md: 'space-around' }}
+          alignItems="center"
+          gap={2}
+        >
+          <FormLabel htmlFor="search" display="flex" justifyContent="space-between" alignItems="center">
+            <Text minWidth="80px">Find med:</Text>
+            <Input id="search" type="text" placeholder="Vasoxyl..." />
+          </FormLabel>
+
+          <Select placeholder="Items per page" maxWidth="30%" alignSelf="center" defaultValue="50">
+            <option value="50">50</option>
+            <option value="80">80</option>
+            <option value="100">100</option>
+          </Select>
+        </Flex>
+
+        {/* List component */}
         <Grid
           gridTemplateColumns={{ base: 'repeat(1, 1fr)', md: '50% 50%', lg: 'repeat(3, 1fr)' }}
           gridAutoFlow="dense"
