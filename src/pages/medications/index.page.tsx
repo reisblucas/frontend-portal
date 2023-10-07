@@ -7,10 +7,17 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
 export default function Medications() {
   const router = useRouter()
+
   const queryPage = useMemo(() => (router.query?.page ? Number(router.query.page) : 1), [router.query])
   const [crrPage, setCrrPage] = useState(queryPage)
 
-  const querySearch = useMemo(() => (router.query?.search as string) ?? null, [router.query])
+  const querySearch = useMemo(() => {
+    if (router.query?.search && (router.query?.search).length > 3) {
+      return router.query.search as string
+    }
+
+    return null
+  }, [router.query])
   const [search, setSearch] = useState(querySearch)
   const debouncedInputValue = useDebounce(search, 500)
 
@@ -26,29 +33,53 @@ export default function Medications() {
 
   const updateRouterQuery = useCallback(
     (queyrParam: string, queryValue: string) => {
-      router.push({
-        ...router,
-        query: {
-          [queyrParam]: queryValue,
-        },
-      })
+      router.query[queyrParam] = queryValue
+      router.push({ ...router }, undefined, {})
+    },
+    [router],
+  )
+
+  const deleteRouterQuery = useCallback(
+    (queyrParam: string) => {
+      delete router.query[queyrParam]
+      router.push({ ...router }, undefined, {})
     },
     [router],
   )
 
   useEffect(() => {
-    if (search !== null) {
-      updateRouterQuery('search', search.trim())
+    if (debouncedInputValue?.length > 3) {
+      updateRouterQuery('search', debouncedInputValue)
     }
+
+    if (search?.length === 0) {
+      deleteRouterQuery('search')
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedInputValue, search])
+  useEffect(() => {
+    if (limit !== null) {
+      updateRouterQuery('limit', limit.toString())
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [debouncedInputValue, limit])
   console.log('search / debounce', search, debouncedInputValue)
 
+  const shouldUseSearchIf = querySearch
+    ? querySearch
+    : debouncedInputValue && debouncedInputValue.length > 3
+    ? debouncedInputValue
+    : null
   const medications = useMedications({
     page: crrPage,
     limit,
-    search: querySearch ? querySearch : debouncedInputValue ? debouncedInputValue : null,
+    search: shouldUseSearchIf,
   })
+
+  const showNoComponentData =
+    medications.isSuccess && medications.data.data.length === 0 && search !== null && !medications.isFetching
 
   const getPagination = useCallback(
     (last_page: number, pagesVisible = 1) => {
@@ -121,10 +152,8 @@ export default function Medications() {
     const {
       currentTarget: { value },
     } = e
-    if (value.length > 3) {
-      const trimmedValue = value.trim()
-      setSearch(trimmedValue)
-    }
+    const trimmedValue = value.trim()
+    setSearch(trimmedValue)
   }, [])
 
   const handleLimitAction = useCallback(
@@ -154,32 +183,28 @@ export default function Medications() {
       >
         <FormLabel htmlFor="search" display="flex" justifyContent="space-between" alignItems="center">
           <Text minWidth="80px">Find med:</Text>
-          <Input id="search" type="text" placeholder="Vasoxyl..." onChange={handleSearchAction} />
+          <Input id="search" type="text" placeholder="Vasoxyl..." onChange={handleSearchAction} value={search} />
         </FormLabel>
 
         <Select
           placeholder="Items per page"
           maxWidth="30%"
           alignSelf="center"
-          defaultValue="50"
+          defaultValue={queryLimit}
           onChange={handleLimitAction}
         >
-          <option value="50">
-            <Link href={{ pathname: `/medications`, query: { limit: '50' } }}>50</Link>
-          </option>
-          <option value="80">
-            <Link href={{ pathname: `/medications`, query: { limit: '80' } }}>80</Link>
-          </option>
-          <option value="100">
-            <Link href={{ pathname: `/medications`, query: { limit: '100' } }}>100</Link>
-          </option>
+          <option value="50">50</option>
+          <option value="80">80</option>
+          <option value="100">100</option>
         </Select>
       </Flex>
 
       <Skeleton isLoaded={medications.isSuccess}>
         {/* List component */}
-        {medications.isSuccess && medications.data.data.length === 0 && search !== null && (
-          <Text>No medication found with name {search}</Text>
+        {showNoComponentData && (
+          <Text>
+            No medication found or contain the word <Text as="span">&quot;{search}&quot;</Text>
+          </Text>
         )}
 
         <Grid
