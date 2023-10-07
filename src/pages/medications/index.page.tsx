@@ -203,7 +203,7 @@ export default function Medications() {
         {/* List component */}
         {showNoComponentData && (
           <Text>
-            No medication found or contain the word <Text as="span">&quot;{search}&quot;</Text>
+            No medication found or contain the word <Text as="span">&quot;{debouncedInputValue}&quot;</Text>
           </Text>
         )}
 
