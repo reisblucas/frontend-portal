@@ -12,6 +12,7 @@ export default function Medications() {
 
   const getPagination = useCallback(
     (last_page: number, pagesVisible = 1) => {
+      let setEllipsisNow = false
       const pages: Medications.PaginationPages[] = []
 
       for (let i = 1; i <= last_page; i++) {
@@ -33,7 +34,21 @@ export default function Medications() {
           obj.show = true
         }
 
-        pages.push(obj)
+        if (obj.show) {
+          pages.push(obj)
+
+          if (!setEllipsisNow) {
+            setEllipsisNow = true
+            continue
+          } else {
+            continue
+          }
+        }
+
+        if (setEllipsisNow) {
+          pages.push({ page: i, show: false })
+          setEllipsisNow = false
+        }
       }
 
       return pages
@@ -53,7 +68,9 @@ export default function Medications() {
       return medication.strength.includes('**') ? (
         <Text fontSize={{ base: '2xs', md: 'xs' }}>{formatStrength(medication.strength).strength} **</Text>
       ) : (
-        <Text fontSize={{ base: '2xs', md: 'xs' }}>{medication.strength}</Text>
+        <Text fontSize={{ base: '2xs', md: 'xs' }} noOfLines={1}>
+          {medication.strength}
+        </Text>
       )
     },
     [formatStrength],
@@ -118,13 +135,13 @@ export default function Medications() {
           {medications.isSuccess &&
             getPagination(medications.data.last_page, 2).map(({ page, show }) => {
               if (!show) {
-                return <Text key={page * 3.14}>...</Text>
+                return <Text key={`${page * Math.PI} ${show}`}>...</Text>
               }
 
               return (
                 <Link
                   href={{ pathname: '/medications', query: { page } }}
-                  key={page * 3.14}
+                  key={`${page * Math.PI} ${show}`}
                   onClick={() => setCrrPage(page)}
                 >
                   <Text color={queryPage === page ? 'green.500' : 'inherit'} _hover={{ color: 'blue.500' }}>
