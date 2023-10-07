@@ -1,6 +1,6 @@
 import { Medication, useMedications } from '@/medications'
 import { useDebounce } from '@/infra/helpers'
-import { Flex, FormLabel, Grid, Heading, Input, Select, Skeleton, Text, VStack } from '@chakra-ui/react'
+import { Flex, Grid, Heading, Input, Select, Skeleton, Text, VStack } from '@chakra-ui/react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
@@ -176,15 +176,18 @@ export default function Medications() {
 
       {/* filters component */}
       <Flex
-        flexDirection={{ base: 'column', md: 'row' }}
+        flexDirection="row"
         justifyContent={{ base: 'space-between', md: 'space-around' }}
         alignItems="center"
         gap={2}
       >
-        <FormLabel htmlFor="search" display="flex" justifyContent="space-between" alignItems="center">
-          <Text minWidth="80px">Find med:</Text>
-          <Input id="search" type="text" placeholder="Vasoxyl..." onChange={handleSearchAction} value={search} />
-        </FormLabel>
+        <Input
+          id="search"
+          type="text"
+          placeholder="Find your medication..."
+          onChange={handleSearchAction}
+          value={search}
+        />
 
         <Select
           placeholder="Items per page"
