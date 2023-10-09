@@ -1,9 +1,10 @@
-import { Medication, useMedications } from '@/medications'
-import { useDebounce } from '@/infra/helpers'
 import { Flex, Grid, Heading, Input, Select, Skeleton, Text, VStack } from '@chakra-ui/react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
+
+import { Medication, useMedications } from '@/medications'
+import { useDebounce, useDeleteRouterQuery, useUpdateRouterQuery } from '@/infra/helpers'
 
 export default function Medications() {
   const router = useRouter()
@@ -31,21 +32,8 @@ export default function Medications() {
   }, [router.query])
   const [limit, setLimit] = useState(queryLimit)
 
-  const updateRouterQuery = useCallback(
-    (queyrParam: string, queryValue: string) => {
-      router.query[queyrParam] = queryValue
-      router.push({ ...router }, undefined, {})
-    },
-    [router],
-  )
-
-  const deleteRouterQuery = useCallback(
-    (queyrParam: string) => {
-      delete router.query[queyrParam]
-      router.push({ ...router }, undefined, {})
-    },
-    [router],
-  )
+  const updateRouterQuery = useUpdateRouterQuery(router)
+  const deleteRouterQuery = useDeleteRouterQuery(router)
 
   useEffect(() => {
     if (debouncedInputValue?.length > 3) {
@@ -62,9 +50,8 @@ export default function Medications() {
     if (limit !== null) {
       updateRouterQuery('limit', limit.toString())
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debouncedInputValue, limit])
+  }, [limit])
 
   const shouldUseSearchIf = querySearch
     ? querySearch
@@ -155,17 +142,13 @@ export default function Medications() {
     setSearch(trimmedValue)
   }, [])
 
-  const handleLimitAction = useCallback(
-    (e: React.FormEvent<HTMLSelectElement>) => {
-      const {
-        currentTarget: { value },
-      } = e
+  const handleLimitAction = useCallback((e: React.FormEvent<HTMLSelectElement>) => {
+    const {
+      currentTarget: { value },
+    } = e
 
-      setLimit(Number(value))
-      updateRouterQuery('limit', value)
-    },
-    [updateRouterQuery],
-  )
+    setLimit(Number(value))
+  }, [])
 
   return (
     <VStack gap={4}>
@@ -266,7 +249,7 @@ export default function Medications() {
 
               return (
                 <Link
-                  href={{ pathname: '/medications', query: { page } }}
+                  href={{ pathname: '/medications', query: { ...router.query, page } }}
                   key={`${page * Math.PI} ${show}`}
                   onClick={() => setCrrPage(page)}
                 >
