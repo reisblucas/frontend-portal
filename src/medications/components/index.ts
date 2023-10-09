@@ -1,1 +1,1 @@
-export * from './MedPagination'
+export * from './MedicationsGridList'
