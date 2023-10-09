@@ -1,8 +1,8 @@
-import { Button, Flex, Heading, Input, Select, Skeleton, Text, VStack } from '@chakra-ui/react'
+import { Button, Flex, Heading, Skeleton, Text, VStack } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { MedicationsGridList, useMedications, usePagination } from '@/medications'
+import { Filters, MedicationsGridList, useMedications, usePagination } from '@/medications'
 import { useDebounce, useDeleteRouterQuery, useUpdateRouterQuery } from '@/infra/helpers'
 
 export default function Medications() {
@@ -103,36 +103,14 @@ export default function Medications() {
         Medications
       </Heading>
 
-      {/* filters component */}
-      <Flex
-        flexDirection="row"
-        justifyContent={{ base: 'space-between', md: 'space-around' }}
-        alignItems="center"
-        gap={2}
-      >
-        <Input
-          id="search"
-          type="text"
-          placeholder="Find your medication..."
-          onChange={handleSearchAction}
-          value={search ?? ''}
-        />
-
-        <Select
-          placeholder="Items per page"
-          maxWidth="30%"
-          alignSelf="center"
-          defaultValue={queryLimit}
-          onChange={handleLimitAction}
-        >
-          <option value="50">50</option>
-          <option value="80">80</option>
-          <option value="100">100</option>
-        </Select>
-      </Flex>
+      <Filters
+        search={search}
+        queryLimit={queryLimit}
+        handleLimitAction={handleLimitAction}
+        handleSearchAction={handleSearchAction}
+      />
 
       <Skeleton isLoaded={medications.isSuccess}>
-        {/* List component */}
         {showNoComponentData && (
           <Text>
             No medication found or contain the word <Text as="span">&quot;{debouncedInputValue}&quot;</Text>
