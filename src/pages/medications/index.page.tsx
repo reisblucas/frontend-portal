@@ -65,7 +65,6 @@ export default function Medications() {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [debouncedInputValue, limit])
-  console.log('search / debounce', search, debouncedInputValue)
 
   const shouldUseSearchIf = querySearch
     ? querySearch
@@ -186,7 +185,7 @@ export default function Medications() {
           type="text"
           placeholder="Find your medication..."
           onChange={handleSearchAction}
-          value={search}
+          value={search ?? ''}
         />
 
         <Select
