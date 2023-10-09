@@ -1,9 +1,14 @@
 import { client } from '@/infra/axios'
-import { MedicationsList } from './contracts'
+import { ManufacturesList, MedicationsList } from './contracts'
 
 class MedicationsService {
   async get({ page, limit, search }: MedicationsService.ListParams) {
     const response = await client.get<MedicationsList>('/medications', { params: { page, limit, search } })
+    return response.data
+  }
+
+  async getManufacturers() {
+    const response = await client.get<ManufacturesList>('/manufacturers')
     return response.data
   }
 }

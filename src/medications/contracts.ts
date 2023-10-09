@@ -14,3 +14,5 @@ export interface MedicationsList {
   total: number
   last_page: number
 }
+
+export type ManufacturesList = MedicationsList

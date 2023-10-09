@@ -78,3 +78,19 @@ export namespace usePagination {
     show: boolean
   }
 }
+
+export function useManufacturers() {
+  const toast = useToast()
+
+  return useQuery({
+    queryKey: ['manufacturers'],
+    queryFn: () => medicationsService.getManufacturers(),
+    onError: () => {
+      toast({
+        title: 'Manufacturers',
+        description: 'Something went wrong on fetching manufacturers',
+        status: 'error',
+      })
+    },
+  })
+}
