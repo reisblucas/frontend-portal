@@ -2,7 +2,7 @@ import { SessionStrategy, DefaultSession } from 'next-auth'
 import NextAuth, { AuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { signinService } from '@/signin/services'
-import { DefaultJWT } from 'next-auth/jwt'
+import { DefaultJWT, JWT } from 'next-auth/jwt'
 
 declare module 'next-auth' {
   interface Session {
@@ -16,6 +16,30 @@ declare module 'next-auth' {
 declare module 'next-auth/jwt' {
   interface JWT extends DefaultJWT {
     clientToken: string
+    exp: number
+    sub: string
+    iat: number
+    jti: string
+  }
+}
+
+interface JWTIntern extends JWT {
+  username: string
+  password: string
+}
+
+async function refreshAccessToken(token: JWTIntern) {
+  try {
+    const response = await signinService.login({ username: token.username, password: token.password })
+    if (response.data?.token) {
+      return {
+        ...token,
+        clientToken: response.data.token,
+      }
+    }
+  } catch (error) {
+    console.log('error', error)
+    return null
   }
 }
 
@@ -39,7 +63,11 @@ export const authOptions: AuthOptions = {
           const response = await signinService.login({ username: credentials.username, password: credentials.password })
 
           if (response.data?.token) {
-            return { id: '1', clientToken: response.data.token }
+            return {
+              id: '1',
+              clientToken: response.data.token,
+              ...credentials,
+            }
           }
         } catch (error) {
           return null
@@ -53,11 +81,16 @@ export const authOptions: AuthOptions = {
   debug: process.env.NODE_ENV === 'development',
   callbacks: {
     async jwt({ token, user }) {
+      console.log('jwt callback:', { token, user })
       if (user !== undefined && user.clientToken !== undefined) {
-        token = { ...token, clientToken: user.clientToken }
+        token = { ...token, ...user }
       }
 
-      return token
+      if (Date.now() < token.exp) {
+        return token
+      }
+
+      return refreshAccessToken(token as JWTIntern)
     },
     async session({ session, token }) {
       console.log('Session callback:', { session, token })
