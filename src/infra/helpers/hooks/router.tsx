@@ -5,9 +5,7 @@ export function useUpdateRouterQuery(router: NextRouter) {
   const updateRouterQuery = useCallback(
     (queryParam: string, queryValue: string) => {
       router.query[queryParam] = queryValue
-      console.log('before push', router)
       router.push({ ...router }, undefined, {})
-      console.log('before after', router)
     },
     [router],
   )
