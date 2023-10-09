@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { medicationsService } from './services'
 import { useToast } from '@chakra-ui/react'
 import { useCallback } from 'react'
@@ -89,6 +89,29 @@ export function useManufacturers() {
       toast({
         title: 'Manufacturers',
         description: 'Something went wrong on fetching manufacturers',
+        status: 'error',
+      })
+    },
+  })
+}
+
+export function useCreateMedication() {
+  const toast = useToast()
+
+  return useMutation({
+    mutationFn: medicationsService.createMedication,
+    onSuccess: () => {
+      toast({
+        title: 'Medication',
+        description: 'Medication created successfully',
+        status: 'success',
+      })
+    },
+    onError: (response) => {
+      console.log('toast on error response', response)
+      toast({
+        title: 'Medication',
+        description: 'Occur some error on creation',
         status: 'error',
       })
     },
