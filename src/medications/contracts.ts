@@ -19,7 +19,6 @@ export interface Manufacturer {
   name: string
 }
 
-export type ManufacturersList = MedicationsList &
-  Exclude<keyof MedicationsList, 'data'> & {
-    data: Manufacturer[]
-  }
+export type ManufacturersList = Exclude<keyof MedicationsList, 'data'> & {
+  data: Manufacturer[]
+}
