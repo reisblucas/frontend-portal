@@ -31,6 +31,12 @@ I used pnpm to install and update the packages, so I do recommend that you use i
    2. `npm run dev`
    3. `yarn dev`
 4. Open the link listed on terminal, probably, port 3000: http://localhost:3000/
+5. Allowed user to login:
+
+```
+username: bluestorm-api
+password: apipassword123
+```
 
 ## Technologies/Frameworks:
 
@@ -92,3 +98,7 @@ I used pnpm to install and update the packages, so I do recommend that you use i
   - [x] Add business image on Home
   - [x] Add pill image on `Sign in page`
 - [x] Fix Head metate receiving more than 1 children on Title - Error is only locally
+
+```
+
+```
