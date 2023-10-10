@@ -2,6 +2,8 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { medicationsService } from './services'
 import { useToast } from '@chakra-ui/react'
 import { useCallback } from 'react'
+import { AxiosError } from 'axios'
+import { MedicationFieldDictionary } from './dictionaries'
 
 export function useMedications({ page, limit, search }: useMedications.Params) {
   const toast = useToast()
@@ -88,7 +90,7 @@ export function useManufacturers() {
     onError: () => {
       toast({
         title: 'Manufacturers',
-        description: 'Something went wrong on fetching manufacturers',
+        description: 'Something went wrong on getting manufacturers',
         status: 'error',
       })
     },
@@ -107,13 +109,26 @@ export function useCreateMedication() {
         status: 'success',
       })
     },
-    onError: (response) => {
-      console.log('toast on error response', response)
+    onError: (err: AxiosError) => {
+      // Backend response example:
+      // expires_on  - error message
+      const responseMessage = (err.response.data as useCreateMedication.ErrorResponse).message
+      const splitted = responseMessage.split('-')
+      const translated = MedicationFieldDictionary[splitted[0].trim()]
+      const errorMessage = splitted[1].trim()
+
       toast({
         title: 'Medication',
-        description: 'Occur some error on creation',
+        description: `${translated} ${errorMessage}`,
         status: 'error',
       })
     },
   })
+}
+
+// @refactor: extende AxiosError module or redeclare it
+export namespace useCreateMedication {
+  export interface ErrorResponse {
+    message: string
+  }
 }
