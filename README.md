@@ -1,6 +1,6 @@
 ## About
 
-Frontend project developed by Bluestorm Software to test the candidate abilities and a API doc was available in the test period. How I did it in my free time, my focus was to turn it scalable and clean.
+Frontend project developed by Bluestorm Software to test the candidate abilities and a API doc was available in the test period. How I did it in my free time, my focus was to turn it scalable, clean and multiplatform, this app could be used on smartphones, tablets and computers/laptops :)
 
 ### Prerequisites
 
