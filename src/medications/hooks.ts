@@ -1,7 +1,9 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { medicationsService } from './services'
 import { useToast } from '@chakra-ui/react'
 import { useCallback } from 'react'
+import { AxiosError } from 'axios'
+import { MedicationFieldDictionary } from './dictionaries'
 
 export function useMedications({ page, limit, search }: useMedications.Params) {
   const toast = useToast()
@@ -76,5 +78,57 @@ export namespace usePagination {
   export interface Pages {
     page: number
     show: boolean
+  }
+}
+
+export function useManufacturers() {
+  const toast = useToast()
+
+  return useQuery({
+    queryKey: ['manufacturers'],
+    queryFn: () => medicationsService.getManufacturers(),
+    onError: () => {
+      toast({
+        title: 'Manufacturers',
+        description: 'Something went wrong on getting manufacturers',
+        status: 'error',
+      })
+    },
+  })
+}
+
+export function useCreateMedication() {
+  const toast = useToast()
+
+  return useMutation({
+    mutationFn: medicationsService.createMedication,
+    onSuccess: () => {
+      toast({
+        title: 'Medication',
+        description: 'Medication created successfully',
+        status: 'success',
+      })
+    },
+    onError: (err: AxiosError) => {
+      // Backend response example:
+      // expires_on  - error message
+      const responseMessage = (err.response.data as useCreateMedication.ErrorResponse).message
+      const splitted = responseMessage.split('-')
+      const translated = MedicationFieldDictionary[splitted[0].trim()]
+      const errorMessage = splitted[1].trim()
+
+      toast({
+        title: 'Medication',
+        description: `${translated} ${errorMessage}`,
+        status: 'error',
+      })
+    },
+  })
+}
+
+// @refactor: extende AxiosError module or redeclare it
+export namespace useCreateMedication {
+  export interface ErrorResponse {
+    message: string
   }
 }

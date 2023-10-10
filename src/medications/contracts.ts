@@ -14,3 +14,11 @@ export interface MedicationsList {
   total: number
   last_page: number
 }
+
+export interface Manufacturer {
+  name: string
+}
+
+export type ManufacturersList = Exclude<keyof MedicationsList, 'data'> & {
+  data: Manufacturer[]
+}

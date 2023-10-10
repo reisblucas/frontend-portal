@@ -1,4 +1,5 @@
 export * from './components'
 export * from './contracts'
+export * from './dictionaries'
 export * from './hooks'
 export * from './services'
