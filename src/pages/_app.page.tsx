@@ -5,13 +5,14 @@ import { SessionProvider } from 'next-auth/react'
 import { ChakraCustomProvider } from '@/infra/chakra/provider'
 import { QueryClientProvider } from '@/infra/tanstack'
 import { Auth } from '@/infra/nextauth'
-import { Footer } from '@/ui'
+import { Layout } from '@/ui'
 
 interface MyAppProps {
   Component: AppProps['Component'] & {
     isPublic: boolean
     title: string
     content?: string
+    renderHeader?: boolean
   }
   pageProps: AppProps['pageProps']
 }
@@ -26,14 +27,15 @@ function MyApp({ Component, pageProps }: MyAppProps) {
       </Head>
       <QueryClientProvider>
         <SessionProvider session={pageProps.session}>
-          {Component.isPublic ? (
-            <Component {...pageProps} />
-          ) : (
-            <Auth>
+          <Layout renderHeader={Component.renderHeader}>
+            {Component.isPublic ? (
               <Component {...pageProps} />
-            </Auth>
-          )}
-          <Footer />
+            ) : (
+              <Auth>
+                <Component {...pageProps} />
+              </Auth>
+            )}
+          </Layout>
         </SessionProvider>
       </QueryClientProvider>
     </ChakraCustomProvider>

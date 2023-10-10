@@ -22,3 +22,4 @@ export default function Home() {
 
 Home.title = 'Home'
 Home.isPublic = true
+Home.renderHeader = false
