@@ -9,7 +9,7 @@
     "component": "cypress open --component",
     "component:headless": "cypress run --component",
     "lint": "next lint . --max-warnings=0",
-    "prepare": "husky install"
+    "prepublish": "[ \"$NODE_ENV\" = production ] && exit 0; husky install"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.1.1",
