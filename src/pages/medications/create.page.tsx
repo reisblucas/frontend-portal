@@ -1,4 +1,4 @@
-import { Flex, Grid, GridItem, Heading, VStack, useToast } from '@chakra-ui/react'
+import { Checkbox, Flex, Grid, GridItem, Heading, Text, VStack, useToast } from '@chakra-ui/react'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { FormProvider, useForm } from 'react-hook-form'
 import * as Yup from 'yup'
@@ -6,30 +6,30 @@ import * as Yup from 'yup'
 import { MedicationsService, useCreateMedication, useManufacturers } from '@/medications'
 import { InputControl, SubmitButton } from 'react-hook-form-chakra'
 
-const validationSchema = Yup.object<MedicationsService.CreateMedicationParams>({
+const validationSchema = Yup.object({
   drug_name: Yup.string().required('Drug name is required').max(30),
   units_per_package: Yup.number()
     .required('Units per package is required')
     .moreThan(0, 'Units per package must be greater than 0'),
   issued_on: Yup.string().required('Issued on is required'),
   expires_on: Yup.string().required('Expires on is required'),
-  manufacturers: Yup.array().of(
-    Yup.object({
-      name: Yup.string().required().max(50),
-    }),
-  ),
-})
+  manufacturers: Yup.array().of(Yup.string().max(50)),
+}).defined()
 
-const defaultValues = {
+const defaultValues: MedicationsService.CreateMedicationParams = {
   drug_name: '',
   units_per_package: 0,
   issued_on: undefined,
   expires_on: undefined,
-  manufacturers: undefined,
-} satisfies MedicationsService.CreateMedicationParams
+  manufacturers: [],
+}
 
 export default function CreateMedication() {
-  const form = useForm({ resolver: yupResolver(validationSchema), defaultValues, mode: 'onBlur' })
+  const form = useForm({
+    resolver: yupResolver(validationSchema),
+    defaultValues,
+    mode: 'onBlur',
+  })
   const manufacturers = useManufacturers()
   const createMedication = useCreateMedication()
   const toast = useToast()
@@ -54,6 +54,10 @@ export default function CreateMedication() {
     data.issued_on = issued_on
     data.expires_on = expires_on
 
+    if (data.manufacturers.length === 0) {
+      delete data.manufacturers
+    }
+
     createMedication.mutate(data)
   }
 
@@ -71,9 +75,24 @@ export default function CreateMedication() {
             <InputControl name="issued_on" label="Issued on:" inputProps={{ type: 'date' }} />
             <InputControl name="expires_on" label="Expires on:" inputProps={{ type: 'date' }} />
 
-            <GridItem colSpan={2}>
-              <InputControl name="manufacturers" label="Manufacturers:" />
-            </GridItem>
+            {!manufacturers.isFetching || manufacturers.isSuccess ? (
+              <>
+                {manufacturers.data.data.map((manufacturer) => (
+                  <Checkbox
+                    maxWidth="30%"
+                    alignSelf="center"
+                    minW="100%"
+                    key={manufacturer.name}
+                    value={manufacturer.name}
+                    {...form.register('manufacturers')}
+                  >
+                    {manufacturer.name}
+                  </Checkbox>
+                ))}
+              </>
+            ) : (
+              <Text>No facturer available</Text>
+            )}
 
             <GridItem colSpan={2} display="flex" alignItems="center" justifyContent="center">
               <SubmitButton>Create</SubmitButton>
