@@ -13,7 +13,7 @@ export default function Login() {
   }
 
   return (
-    <Flex flexDir="row" justifyContent="center" align="center" minHeight="calc(100vh - 80px)">
+    <Flex flexDir="row" justifyContent="center" align="center" minHeight="calc(100vh - 112px)">
       <Box width={{ base: '95%', md: '60%', xl: '30%' }}>
         <Flex
           width="80%"
