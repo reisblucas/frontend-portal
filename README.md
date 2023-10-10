@@ -1,6 +1,8 @@
 ## About
 
-Frontend project developed by Bluestorm Software to test the candidate abilities and a API doc was available in the test period. The test was based on:
+Frontend project developed by Bluestorm Software to test the candidate abilities and a API doc was available in the test period. How I did it in my free time, my focus was to turn it scalable and clean.
+
+### Prerequisites
 
 - Login
   - Validate login field restrictions(username and password) and your respective endpoint responses(error and success)
