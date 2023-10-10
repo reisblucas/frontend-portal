@@ -1,10 +1,11 @@
 import type { AppProps } from 'next/app'
+import Head from 'next/head'
+import { SessionProvider } from 'next-auth/react'
 
 import { ChakraCustomProvider } from '@/infra/chakra/provider'
 import { QueryClientProvider } from '@/infra/tanstack'
-import { SessionProvider } from 'next-auth/react'
 import { Auth } from '@/infra/nextauth'
-import Head from 'next/head'
+import { Footer } from '@/ui'
 
 interface MyAppProps {
   Component: AppProps['Component'] & {
@@ -32,6 +33,7 @@ function MyApp({ Component, pageProps }: MyAppProps) {
               <Component {...pageProps} />
             </Auth>
           )}
+          <Footer />
         </SessionProvider>
       </QueryClientProvider>
     </ChakraCustomProvider>
