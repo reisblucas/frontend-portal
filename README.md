@@ -1,27 +1,93 @@
-# Next.js + Cypress
+## About
 
-This example shows how to configure Cypress to work with Next.js.
+Frontend project developed by Bluestorm Software to test the candidate abilities and a API doc was available in the test period. The test was based on:
 
-## Deploy your own
+- Login
+  - Validate login field restrictions(username and password) and your respective endpoint responses(error and success)
+- List medications:
+  - Simple query on db
+  - List should have pagination system based on limit and page number
+  - Added to that, the use should be able to query some word and show the result on screen
+  - \*\* Only the params was controlled by Front End
+- Create medication:
+  - Form field to send to the backend
+  - Validate required field, show errors on form...
+  - Work with errors and success on the API
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example) or preview live with [StackBlitz](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-cypress)
+## Deploy
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-cypress&project-name=with-cypress&repository-name=with-cypress)
+- Vercel: https://pharmacy-portal.vercel.app/
 
 ## How to use
 
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init), [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/), or [pnpm](https://pnpm.io) to bootstrap the example:
+I used pnpm to install and update the packages, so I do recommend that you use it too. Plus to that, Lint Staged is configured to use `pnpm`:
 
-```bash
-npx create-next-app --example with-cypress with-cypress-app
-```
+1. Clone it using SSH method -> `git clone git@github.com:reisblucas/frontend-portal.git`
+2. Install it: `pnpm i` or `npm i` or `yarn i`
+3. Run it:
+   1. `pnpm dev`
+   2. `npm run dev`
+   3. `yarn dev`
+4. Open the link on terminal, probably, port 3000: http://localhost:3000/
 
-```bash
-yarn create next-app --example with-cypress with-cypress-app
-```
+## Technologies/Frameworks:
 
-```bash
-pnpm create next-app --example with-cypress with-cypress-app
-```
+- TypeScript - Latest(@5.2.2)
+- Next.js - Latest(@13.5.4)
+- NextAuth - Latest(4.23.2)
+- Chakra UI - Design system
+- React Hook Form
+  - [3rd Party Bind](https://react-hook-form.com/resources/3rd-party-bindings) between Chakra UI and React Hook Form
+- Tanstack React Query - Cache, Query, Server Side query, revalidating...
+- Yup - Validation Schema
+- Axios
 
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+### Code Quality:
+
+- ESLint
+- Husky
+- Lint Staged
+- Prettier
+
+## Roadmap
+
+- [x] Configuration - Next.js, NextAuth, ESLint, Prettier, Husky, Lint Staged, TypeScript, Providers, Infra...
+- [x] Define project scope - folder structure to be scalable and based on entity
+- [x] NextAuth
+  - [x] Signin persistance until JWT expire
+- [x] Signin Page (Start coding in fact)
+  - [x] Service
+  - [x] Controller(hooks)
+  - [x] View
+  - [x] Refactor and do the Componentization
+  - [x] Contracts
+  - [x] Add Signin form
+  - [x] Validate form - React Hook Form + Yup
+- [x] Medications List
+  - [x] MVCS...
+  - [x] Route fetching without queryParams on `route`
+  - [x] Route fetching with queryParams - Limit, Search and/or Page
+  - [x] Pagination helper function
+    - [ ] Refactor and move to the right place
+  - [x] Add Filter
+  - [x] Componentization
+  - [x] Add Contracts
+- [x] Create Medication
+  - [x] MVCS...
+  - [x] Update Contract
+  - [x] Add Form
+  - [x] Validate form
+  - [x] Add handler to control `min date` on `expired_on` input based on `issued_on` field
+- [x] App Head metatag
+- [x] Design
+  - [x] Layout
+    - [x] Header
+    - [x] DrawerNavigation
+      - [x] Buttons as NavLinks
+      - [x] Sign out
+    - [x] Footer
+  - [x] Minor changes to CSS be presentable
+  - [x] Add business image on Home
+  - [x] Add pill image on `Sign in page`
+  - [ ] Fix Head metate receiving more than 1 children on Title
+  - [ ] JWT Token route to check Token correctly
