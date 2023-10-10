@@ -1,5 +1,5 @@
 import { client } from '@/infra/axios'
-import { Manufacturer, ManufacturersList, MedicationsList } from './contracts'
+import { ManufacturersList, MedicationsList } from './contracts'
 
 class MedicationsService {
   async get({ page, limit, search }: MedicationsService.ListParams) {
@@ -30,7 +30,7 @@ export namespace MedicationsService {
     units_per_package: number
     issued_on: string
     expires_on: string
-    manufacturers: Manufacturer[]
+    manufacturers: string[]
   }
 }
 
