@@ -28,7 +28,7 @@ I used pnpm to install and update the packages, so I do recommend that you use i
    1. `pnpm dev`
    2. `npm run dev`
    3. `yarn dev`
-4. Open the link on terminal, probably, port 3000: http://localhost:3000/
+4. Open the link listed on terminal, probably, port 3000: http://localhost:3000/
 
 ## Technologies/Frameworks:
 
