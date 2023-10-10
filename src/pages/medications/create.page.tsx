@@ -8,7 +8,9 @@ import { InputControl, SubmitButton } from 'react-hook-form-chakra'
 
 const validationSchema = Yup.object<MedicationsService.CreateMedicationParams>({
   drug_name: Yup.string().required('Drug name is required').max(30),
-  units_per_package: Yup.number().required('Units per package is required').moreThan(0),
+  units_per_package: Yup.number()
+    .required('Units per package is required')
+    .moreThan(0, 'Units per package must be greater than 0'),
   issued_on: Yup.string().required('Issued on is required'),
   expires_on: Yup.string().required('Expires on is required'),
   manufacturers: Yup.array().of(
