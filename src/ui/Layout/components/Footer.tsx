@@ -23,7 +23,14 @@ export function Footer() {
         <Text>Made with 💚</Text>
         <Text>
           © {actualYear}{' '}
-          <Text as="span">
+          <Text
+            as="span"
+            sx={{
+              a: {
+                textDecoration: 'underline',
+              },
+            }}
+          >
             <Link href="https://github.com/reisblucas">@reisblucas</Link>
           </Text>
           . All rights reserved.
