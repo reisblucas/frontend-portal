@@ -119,7 +119,7 @@ export default function Medications() {
 
         {medications.isSuccess && <MedicationsGridList medications={medications.data} />}
 
-        <Flex gap={2} justifyContent="center" alignItems="center">
+        <Flex gap={2} justifyContent="center" alignItems="center" marginTop={4}>
           {medications.isSuccess &&
             pagination().map(({ page, show }) => {
               if (!show) {
