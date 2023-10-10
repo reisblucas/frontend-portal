@@ -18,6 +18,7 @@ export function Footer() {
             textAlign: 'center',
           },
         }}
+        boxShadow="rgba(9, 30, 66, 0.25) 0px 4px 8px -2px, rgba(9, 30, 66, 0.08) 5px 0px 5px 5px;"
       >
         <Text>Made with 💚</Text>
         <Text>
