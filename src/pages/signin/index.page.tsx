@@ -13,7 +13,7 @@ export default function Login() {
   }
 
   return (
-    <Flex justifyContent="center" align="center" minHeight="calc(100vh - 80px)">
+    <Flex justifyContent="center" align="center" minHeight="calc(100vh - 130px)">
       <Box width="50%">
         <Flex width="50%" flexDir="column" m="0 auto" gap={4} minHeight="300px">
           <Box>
