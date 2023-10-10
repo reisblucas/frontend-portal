@@ -34,23 +34,28 @@ export function DrawerNavigation() {
       <Drawer isOpen={isOpen} placement="right" onClose={onClose} finalFocusRef={btnRef}>
         <DrawerOverlay />
         <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader>Navigation</DrawerHeader>
+          <DrawerCloseButton _hover={{ backgroundColor: 'red.100' }} />
+          <DrawerHeader textAlign="center">Navigation</DrawerHeader>
 
           <DrawerBody
             display="flex"
             flexDir="column"
             sx={{
-              a: {
-                maxWidth: 'fit-content',
-                _hover: {
-                  borderBottom: '1px solid',
-                },
+              button: {
+                minWidth: '100%',
               },
             }}
           >
-            <Link href="/medications">• Medications</Link>
-            <Link href="/medications/create">• Create Medications</Link>
+            <Link href="/medications">
+              <Button colorScheme="green" variant="ghost">
+                Medications
+              </Button>
+            </Link>
+            <Link href="/medications/create">
+              <Button colorScheme="green" variant="ghost">
+                Create Medications
+              </Button>
+            </Link>
           </DrawerBody>
 
           <DrawerFooter justifyContent="center">
