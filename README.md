@@ -89,5 +89,4 @@ I used pnpm to install and update the packages, so I do recommend that you use i
   - [x] Minor changes to CSS be presentable
   - [x] Add business image on Home
   - [x] Add pill image on `Sign in page`
-  - [ ] Fix Head metate receiving more than 1 children on Title
-  - [ ] JWT Token route to check Token correctly
+- [x] Fix Head metate receiving more than 1 children on Title - Error is only locally
