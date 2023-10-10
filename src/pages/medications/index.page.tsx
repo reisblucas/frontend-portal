@@ -98,7 +98,7 @@ export default function Medications() {
   }, [])
 
   return (
-    <VStack gap={4}>
+    <VStack gap={4} minHeight="calc(100vh - 162px)">
       <Heading as="h1" textAlign="center">
         Medications
       </Heading>
@@ -119,7 +119,7 @@ export default function Medications() {
 
         {medications.isSuccess && <MedicationsGridList medications={medications.data} />}
 
-        <Flex gap={2} justifyContent="center" alignItems="center">
+        <Flex gap={2} justifyContent="center" alignItems="center" marginTop={4}>
           {medications.isSuccess &&
             pagination().map(({ page, show }) => {
               if (!show) {

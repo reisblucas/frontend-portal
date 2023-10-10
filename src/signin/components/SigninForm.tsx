@@ -56,7 +56,9 @@ export default function SigninForm() {
           style={{ ...inputProjectDefault }}
         />
 
-        <SubmitButton alignSelf="center">Sign in</SubmitButton>
+        <SubmitButton alignSelf="center" colorScheme="green">
+          Sign in
+        </SubmitButton>
       </VStack>
     </FormProvider>
   )

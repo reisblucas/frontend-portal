@@ -33,7 +33,16 @@ export function MedicationsGridList({ medications }: MedicationsGridList.Props) 
     >
       {medications.data.map((medication) => {
         return (
-          <Flex key={medication.application_number + medication.product_number} flexDirection="column" padding={2}>
+          <Flex
+            key={medication.application_number + medication.product_number}
+            flexDirection="column"
+            padding={4}
+            borderRadius="2xl"
+            border="2px"
+            borderColor="yellow.200"
+            backgroundColor="yellow.50"
+            boxShadow="rgba(0, 0, 0, 0.45) 0px 25px 20px -20px"
+          >
             <Text
               fontSize={{ base: 'xs', md: 'md' }}
               textAlign="center"
