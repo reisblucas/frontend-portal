@@ -98,7 +98,7 @@ export default function Medications() {
   }, [])
 
   return (
-    <VStack gap={4}>
+    <VStack gap={4} minHeight="calc(100vh - 80px)">
       <Heading as="h1" textAlign="center">
         Medications
       </Heading>

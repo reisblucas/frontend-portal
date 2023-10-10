@@ -71,7 +71,7 @@ export default function CreateMedication() {
   }
 
   return (
-    <Flex flexDirection="column" gap={4}>
+    <Flex flexDirection="column" justifyContent="center" gap={4} minHeight="calc(100vh - 80px)">
       <Heading as="h1" textAlign="center">
         Create Medication
       </Heading>
