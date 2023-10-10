@@ -33,3 +33,4 @@ export default function Login() {
 }
 
 Login.isPublic = true
+Login.title = 'Login'

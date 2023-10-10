@@ -139,3 +139,6 @@ export default function Medications() {
     </VStack>
   )
 }
+
+Medications.title = 'Medications'
+Medications.content = 'List of medications'

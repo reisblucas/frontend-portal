@@ -123,3 +123,6 @@ export default function CreateMedication() {
     </Flex>
   )
 }
+
+CreateMedication.title = 'Create Medication'
+CreateMedication.content = 'Create a new medication'

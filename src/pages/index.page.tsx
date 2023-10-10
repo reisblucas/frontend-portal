@@ -7,3 +7,5 @@ export default function Home() {
     </Flex>
   )
 }
+
+Home.title = 'Home'
