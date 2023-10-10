@@ -1,9 +1,13 @@
-import { ChakraProvider } from '@chakra-ui/react'
+import { Box, ChakraProvider } from '@chakra-ui/react'
 
 import { theme } from './styles'
 
 export const ChakraCustomProvider = ({ children }: ChakraCustomProvider.Props) => {
-  return <ChakraProvider theme={theme}>{children}</ChakraProvider>
+  return (
+    <ChakraProvider theme={theme}>
+      <Box padding={4}>{children}</Box>
+    </ChakraProvider>
+  )
 }
 
 export namespace ChakraCustomProvider {
