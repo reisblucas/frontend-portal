@@ -57,6 +57,45 @@ password: apipassword123
 - Lint Staged
 - Prettier
 
+## Folder sctructure
+
+- Generally, entities come with your respective files, hooks, contracts, services, dictionaries...
+- UI things related to this folder, patterns global components to use in the entire application, Layout component, icons if we use custom icons and in the future could use in the application.
+- Infra
+  - helpers: global helpers
+  - hooks: global hooks
+  - libs: forgot to add libs folder\*
+    - axios
+    - chakra
+    - nextauth
+    - tanstack
+- Based on that we have our structure folder
+
+```
+.
+└── src/
+    ├── ...
+    ├── entity/
+    │   ├── hooks
+    │   ├── contracts
+    │   ├── services
+    │   ├── dictionaries
+    │   ├── helpers
+    │   └── components/
+    │       ├── indext.ts
+    │       └── ComponentName.tsx
+    ├── ...
+    └── ui/
+        ├── icons/
+        │   └── ...
+        ├── patterns(global components)/
+        │   └── ...
+        └── Layout/
+            ├── Header
+            ├── Footer
+            └── ...
+```
+
 ## Roadmap
 
 - [x] Configuration - Next.js, NextAuth, ESLint, Prettier, Husky, Lint Staged, TypeScript, Providers, Infra...
@@ -98,7 +137,3 @@ password: apipassword123
   - [x] Add business image on Home
   - [x] Add pill image on `Sign in page`
 - [x] Fix Head metate receiving more than 1 children on Title - Error is only locally
-
-```
-
-```
